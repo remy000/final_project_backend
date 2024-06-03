@@ -9,7 +9,12 @@ import java.util.List;
 @Table
 public class Patient {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "patient_generator")
+    @SequenceGenerator(
+            name = "patient_generator",
+            sequenceName = "patient_sequence_name",
+            allocationSize = 1
+    )
     private int patientId;
     private String names;
     private String email;
@@ -23,6 +28,7 @@ public class Patient {
     private String sickness;
     private String allergies;
     private String roles;
+    private String assignedProvider;
     private String password;
     @ManyToOne
     @JoinColumn(name = "providerId")
@@ -39,7 +45,7 @@ public class Patient {
     public Patient() {
     }
 
-    public Patient(int patientId, String names, String email, String phoneNumber, String bloodGroup, LocalDate birthDate, String weight, String gender, int age, String address, String sickness, String allergies, String roles, String password, HealthCareProvider healthCareProvider, List<HealthData> healthData, List<CarePlan> carePlans, List<Report> reports, List<Appointment> appointments) {
+    public Patient(int patientId, String names, String email, String phoneNumber, String bloodGroup, LocalDate birthDate, String weight, String gender, int age, String address, String sickness, String allergies, String roles, String assignedProvider, String password, HealthCareProvider healthCareProvider, List<HealthData> healthData, List<CarePlan> carePlans, List<Report> reports, List<Appointment> appointments) {
         this.patientId = patientId;
         this.names = names;
         this.email = email;
@@ -53,6 +59,7 @@ public class Patient {
         this.sickness = sickness;
         this.allergies = allergies;
         this.roles = roles;
+        this.assignedProvider = assignedProvider;
         this.password = password;
         this.healthCareProvider = healthCareProvider;
         this.healthData = healthData;
@@ -163,6 +170,14 @@ public class Patient {
 
     public void setRoles(String roles) {
         this.roles = roles;
+    }
+
+    public String getAssignedProvider() {
+        return assignedProvider;
+    }
+
+    public void setAssignedProvider(String assignedProvider) {
+        this.assignedProvider = assignedProvider;
     }
 
     public String getPassword() {

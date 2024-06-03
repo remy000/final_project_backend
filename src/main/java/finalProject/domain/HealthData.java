@@ -7,14 +7,20 @@ import java.time.LocalDate;
 @Table
 public class HealthData {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "health_generator")
+    @SequenceGenerator(
+            name = "health_generator",
+            sequenceName = "health_sequence_name",
+            allocationSize = 1
+    )
     private int id;
-    private String calories;
-    private String bodyWater;
-    private String exercisesDuration;
-    private String heartRate;
-    private String bloodPressure;
-    private String respLevel;
+    private float calories;
+    private float bodyWater;
+    private float exercisesDuration;
+    private float heartRate;
+    private float bloodPressure;
+    private float respLevel;
+    private float stressLevel;
     private LocalDate regDate;
     @ManyToOne
     @JoinColumn(name = "patientId")
@@ -23,7 +29,7 @@ public class HealthData {
     public HealthData() {
     }
 
-    public HealthData(int id, String calories, String bodyWater, String exercisesDuration, String heartRate, String bloodPressure, String respLevel, LocalDate regDate, Patient patient) {
+    public HealthData(int id, float calories, float bodyWater, float exercisesDuration, float heartRate, float bloodPressure, float respLevel, float stressLevel, LocalDate regDate, Patient patient) {
         this.id = id;
         this.calories = calories;
         this.bodyWater = bodyWater;
@@ -31,6 +37,7 @@ public class HealthData {
         this.heartRate = heartRate;
         this.bloodPressure = bloodPressure;
         this.respLevel = respLevel;
+        this.stressLevel = stressLevel;
         this.regDate = regDate;
         this.patient = patient;
     }
@@ -43,52 +50,60 @@ public class HealthData {
         this.id = id;
     }
 
-    public String getCalories() {
+    public float getCalories() {
         return calories;
     }
 
-    public void setCalories(String calories) {
+    public void setCalories(float calories) {
         this.calories = calories;
     }
 
-    public String getBodyWater() {
+    public float getBodyWater() {
         return bodyWater;
     }
 
-    public void setBodyWater(String bodyWater) {
+    public void setBodyWater(float bodyWater) {
         this.bodyWater = bodyWater;
     }
 
-    public String getExercisesDuration() {
+    public float getExercisesDuration() {
         return exercisesDuration;
     }
 
-    public void setExercisesDuration(String exercisesDuration) {
+    public void setExercisesDuration(float exercisesDuration) {
         this.exercisesDuration = exercisesDuration;
     }
 
-    public String getHeartRate() {
+    public float getHeartRate() {
         return heartRate;
     }
 
-    public void setHeartRate(String heartRate) {
+    public void setHeartRate(float heartRate) {
         this.heartRate = heartRate;
     }
 
-    public String getBloodPressure() {
+    public float getBloodPressure() {
         return bloodPressure;
     }
 
-    public void setBloodPressure(String bloodPressure) {
+    public void setBloodPressure(float bloodPressure) {
         this.bloodPressure = bloodPressure;
     }
 
-    public String getRespLevel() {
+    public float getRespLevel() {
         return respLevel;
     }
 
-    public void setRespLevel(String respLevel) {
+    public void setRespLevel(float respLevel) {
         this.respLevel = respLevel;
+    }
+
+    public float getStressLevel() {
+        return stressLevel;
+    }
+
+    public void setStressLevel(float stressLevel) {
+        this.stressLevel = stressLevel;
     }
 
     public LocalDate getRegDate() {

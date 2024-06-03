@@ -7,7 +7,12 @@ import java.time.LocalDate;
 @Table
 public class EducationResource {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "resource_generator")
+    @SequenceGenerator(
+            name = "resource_generator",
+            sequenceName = "resource_sequence_name",
+            allocationSize = 1
+    )
     private int resourceId;
     private String title;
     private String category;

@@ -7,7 +7,12 @@ import java.time.LocalDate;
 @Table
 public class Appointment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "appointment_generator")
+    @SequenceGenerator(
+            name = "appointment_generator",
+            sequenceName = "appointment_sequence_name",
+            allocationSize = 1
+    )
     private int appointmentId;
     private String type;
     private String status;

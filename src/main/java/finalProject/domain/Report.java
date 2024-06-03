@@ -7,7 +7,12 @@ import java.time.LocalDate;
 @Table
 public class Report {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "report_generator")
+    @SequenceGenerator(
+            name = "report_generator",
+            sequenceName = "report_sequence_name",
+            allocationSize = 1
+    )
     private int reportId;
     private String title;
     private String recommendations;

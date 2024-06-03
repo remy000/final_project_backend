@@ -7,7 +7,12 @@ import java.util.List;
 @Table
 public class HealthCareProvider {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "provider_generator")
+    @SequenceGenerator(
+            name = "provider_generator",
+            sequenceName = "provider_sequence_name",
+            allocationSize = 1
+    )
     private int providerId;
     private String names;
     private String email;
@@ -17,6 +22,7 @@ public class HealthCareProvider {
     private String qualifications;
     private String experience;
     private String roles;
+    private String specialization;
     private String password;
     @OneToMany(mappedBy = "healthCareProvider")
     private List<Patient>patients;
@@ -30,7 +36,7 @@ public class HealthCareProvider {
     public HealthCareProvider() {
     }
 
-    public HealthCareProvider(int providerId, String names, String email, String phoneNumber, String gender, String address, String qualifications, String experience, String roles, String password, List<Patient> patients, List<Appointment> appointments, List<CarePlan> carePlans, List<Report> reports) {
+    public HealthCareProvider(int providerId, String names, String email, String phoneNumber, String gender, String address, String qualifications, String experience, String roles, String specialization, String password, List<Patient> patients, List<Appointment> appointments, List<CarePlan> carePlans, List<Report> reports) {
         this.providerId = providerId;
         this.names = names;
         this.email = email;
@@ -40,6 +46,7 @@ public class HealthCareProvider {
         this.qualifications = qualifications;
         this.experience = experience;
         this.roles = roles;
+        this.specialization = specialization;
         this.password = password;
         this.patients = patients;
         this.appointments = appointments;
@@ -109,6 +116,14 @@ public class HealthCareProvider {
 
     public void setExperience(String experience) {
         this.experience = experience;
+    }
+
+    public String getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(String specialization) {
+        this.specialization = specialization;
     }
 
     public String getRoles() {

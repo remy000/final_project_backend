@@ -7,7 +7,12 @@ import java.time.LocalDate;
 @Table
 public class CarePlan {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "plan_generator")
+    @SequenceGenerator(
+            name = "plan_generator",
+            sequenceName = "plan_sequence_name",
+            allocationSize = 1
+    )
     private int planId;
     private String personalizedPlan;
     private String medicalPlan;
