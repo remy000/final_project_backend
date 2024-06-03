@@ -1,4 +1,7 @@
 package finalProject.repository;
 
-public interface ProviderRepo {
+import finalProject.domain.HealthCareProvider;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ProviderRepo extends JpaRepository<HealthCareProvider,Integer> {
 }
