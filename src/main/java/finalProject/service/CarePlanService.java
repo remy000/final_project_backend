@@ -6,7 +6,7 @@ import finalProject.repository.CarePlanRepo;
 import finalProject.repository.PatientRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -18,11 +18,9 @@ public class CarePlanService {
         this.carePlanRepo = carePlanRepo;
         this.patientRepo = patientRepo;
     }
-
-
-
     public void saveCarePlan(CarePlan carePlan){
         if(carePlan!=null){
+            carePlan.setCreationDate(LocalDate.now());
             carePlanRepo.save(carePlan);
         }
     }
@@ -46,5 +44,16 @@ public class CarePlanService {
             return carePlanRepo.findByPatient(patient);
         }
         return null;
+    }
+    public void  updateCarePlan(CarePlan updatedCarePlan){
+        CarePlan existingPlan=carePlanRepo.findById(updatedCarePlan.getPlanId()).orElse(null);
+        if(existingPlan!=null){
+            existingPlan.setPersonalizedPlan(updatedCarePlan.getPersonalizedPlan());
+            existingPlan.setMedicalPlan(updatedCarePlan.getMedicalPlan());
+            existingPlan.setExercisePlan(updatedCarePlan.getExercisePlan());
+            existingPlan.setDietPlan(updatedCarePlan.getDietPlan());
+            existingPlan.setCreationDate(LocalDate.now());
+            carePlanRepo.save(existingPlan);
+        }
     }
 }
