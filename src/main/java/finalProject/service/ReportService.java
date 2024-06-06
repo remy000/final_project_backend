@@ -8,9 +8,7 @@ import finalProject.repository.ProviderRepo;
 import finalProject.repository.ReportRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-
 @Service
 public class ReportService {
     private final ReportRepo reportRepo;

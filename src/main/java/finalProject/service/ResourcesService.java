@@ -2,8 +2,6 @@ package finalProject.service;
 
 import finalProject.domain.EducationResource;
 import finalProject.repository.ResourcesRepo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,7 +18,6 @@ import java.util.UUID;
 
 @Service
 public class ResourcesService {
-    private static final Logger logger= LoggerFactory.getLogger(ResourcesService.class);
     @Value("${upload.path}")
     private String uploadPath;
     private final ResourcesRepo resourcesRepo;
@@ -40,7 +37,7 @@ public class ResourcesService {
          resourcesRepo.save(educationResource);
      }
      catch (Exception ex){
-         logger.error("An error occurred while saving the request", ex);
+         ex.printStackTrace();
      }
 
     }

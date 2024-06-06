@@ -1,5 +1,6 @@
 package finalProject.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -24,6 +25,7 @@ public class HealthData {
     private LocalDate regDate;
     @ManyToOne
     @JoinColumn(name = "patientId")
+    @JsonBackReference(value = "patientDataReference")
     private Patient patient;
 
     public HealthData() {

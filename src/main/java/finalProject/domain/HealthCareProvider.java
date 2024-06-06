@@ -1,11 +1,13 @@
 package finalProject.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import finalProject.repository.UserInfo;
 import jakarta.persistence.*;
 
 import java.util.List;
 @Entity
 @Table
-public class HealthCareProvider {
+public class HealthCareProvider implements UserInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "provider_generator")
     @SequenceGenerator(
@@ -25,12 +27,16 @@ public class HealthCareProvider {
     private String specialization;
     private String password;
     @OneToMany(mappedBy = "healthCareProvider")
+    @JsonManagedReference("patientProviderReference")
     private List<Patient>patients;
     @OneToMany(mappedBy = "healthCareProvider")
+    @JsonManagedReference("ProviderAppointmentReference")
     private List<Appointment>appointments;
     @OneToMany(mappedBy = "healthCareProvider")
+    @JsonManagedReference("ProviderPlanReference")
     private List<CarePlan>carePlans;
     @OneToMany(mappedBy = "healthCareProvider")
+    @JsonManagedReference("ProviderReportReference")
     private List<Report>reports;
 
     public HealthCareProvider() {
@@ -131,6 +137,11 @@ public class HealthCareProvider {
     }
     public void setRoles(String roles) {
         this.roles = roles;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
     }
 
     public String getPassword() {

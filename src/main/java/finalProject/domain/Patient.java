@@ -1,5 +1,8 @@
 package finalProject.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import finalProject.repository.UserInfo;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -7,7 +10,7 @@ import java.util.List;
 
 @Entity
 @Table
-public class Patient {
+public class Patient implements UserInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "patient_generator")
     @SequenceGenerator(
@@ -32,14 +35,19 @@ public class Patient {
     private String password;
     @ManyToOne
     @JoinColumn(name = "providerId")
+    @JsonBackReference(value = "patientProviderReference")
     private HealthCareProvider healthCareProvider;
     @OneToMany(mappedBy = "patient")
+    @JsonManagedReference("patientDataReference")
     private List<HealthData> healthData;
     @OneToMany(mappedBy = "patient")
+    @JsonManagedReference("patientPlanReference")
     private List<CarePlan>carePlans;
     @OneToMany(mappedBy = "patient")
+    @JsonManagedReference("patientReportReference")
     private List<Report>reports;
     @OneToMany(mappedBy = "patient")
+    @JsonManagedReference("patientAppointmentReference")
     private List<Appointment>appointments;
 
     public Patient() {
@@ -178,6 +186,11 @@ public class Patient {
 
     public void setAssignedProvider(String assignedProvider) {
         this.assignedProvider = assignedProvider;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
     }
 
     public String getPassword() {
