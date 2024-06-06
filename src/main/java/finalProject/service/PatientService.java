@@ -64,6 +64,9 @@ public class PatientService {
 
         }
     }
+    public Patient findByEmails(String email){
+        return patientRepo.findByEmail(email).orElse(null);
+    }
     public void assignHealthProvider(int patientId, int providerId){
         Patient patient=patientRepo.findById(patientId).orElse(null);
         HealthCareProvider provider=providerRepo.findById(providerId).orElse(null);
