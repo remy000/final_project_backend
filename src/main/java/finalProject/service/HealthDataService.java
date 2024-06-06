@@ -47,6 +47,16 @@ public class HealthDataService {
     }
     return false;
     }
+    public HealthData findByPatientAndDate(int patientId, LocalDate regDate){
+    Patient patient=patientRepo.findById(patientId).orElse(null);
+    if(patient!=null && regDate!=null) {
+        healthDataRepo.findByPatientAndRegDate(patient,regDate);
+    }
+    else{
+        throw new RuntimeException("patient with" +patientId+ "not found");
+    }
+    return null;
+    }
     public void updateData(HealthData updatedData){
     HealthData data=healthDataRepo.findById(updatedData.getId()).orElse(null);
     if(data!=null){
