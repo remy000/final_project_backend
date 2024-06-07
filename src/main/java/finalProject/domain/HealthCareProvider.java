@@ -124,6 +124,15 @@ public class HealthCareProvider implements UserInfo {
         this.experience = experience;
     }
 
+    @Override
+    public String getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
+    }
+
     public String getSpecialization() {
         return specialization;
     }
@@ -132,18 +141,7 @@ public class HealthCareProvider implements UserInfo {
         this.specialization = specialization;
     }
 
-    public String getRoles() {
-        return roles;
-    }
-    public void setRoles(String roles) {
-        this.roles = roles;
-    }
-
     @Override
-    public String getUsername() {
-        return this.email;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -183,4 +181,11 @@ public class HealthCareProvider implements UserInfo {
     public void setReports(List<Report> reports) {
         this.reports = reports;
     }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+
 }

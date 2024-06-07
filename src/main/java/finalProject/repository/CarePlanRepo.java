@@ -4,8 +4,10 @@ import finalProject.domain.CarePlan;
 import finalProject.domain.Patient;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 
 public interface CarePlanRepo extends JpaRepository<CarePlan,Integer> {
-    List<CarePlan>findByPatient(Patient patient);
+    Optional<CarePlan>findByPatient(Patient patient);
 }

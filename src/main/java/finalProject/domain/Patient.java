@@ -40,9 +40,9 @@ public class Patient implements UserInfo {
     @OneToMany(mappedBy = "patient")
     @JsonManagedReference("patientDataReference")
     private List<HealthData> healthData;
-    @OneToMany(mappedBy = "patient")
+    @OneToOne(mappedBy = "patient")
     @JsonManagedReference("patientPlanReference")
-    private List<CarePlan>carePlans;
+    private CarePlan carePlans;
     @OneToMany(mappedBy = "patient")
     @JsonManagedReference("patientReportReference")
     private List<Report>reports;
@@ -53,7 +53,7 @@ public class Patient implements UserInfo {
     public Patient() {
     }
 
-    public Patient(int patientId, String names, String email, String phoneNumber, String bloodGroup, LocalDate birthDate, String weight, String gender, int age, String address, String sickness, String allergies, String roles, String assignedProvider, String password, HealthCareProvider healthCareProvider, List<HealthData> healthData, List<CarePlan> carePlans, List<Report> reports, List<Appointment> appointments) {
+    public Patient(int patientId, String names, String email, String phoneNumber, String bloodGroup, LocalDate birthDate, String weight, String gender, int age, String address, String sickness, String allergies, String roles, String assignedProvider, String password, HealthCareProvider healthCareProvider, List<HealthData> healthData, CarePlan carePlans, List<Report> reports, List<Appointment> appointments) {
         this.patientId = patientId;
         this.names = names;
         this.email = email;
@@ -172,6 +172,7 @@ public class Patient implements UserInfo {
         this.allergies = allergies;
     }
 
+    @Override
     public String getRoles() {
         return roles;
     }
@@ -189,10 +190,6 @@ public class Patient implements UserInfo {
     }
 
     @Override
-    public String getUsername() {
-        return this.email;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -217,11 +214,11 @@ public class Patient implements UserInfo {
         this.healthData = healthData;
     }
 
-    public List<CarePlan> getCarePlans() {
+    public CarePlan getCarePlans() {
         return carePlans;
     }
 
-    public void setCarePlans(List<CarePlan> carePlans) {
+    public void setCarePlans(CarePlan carePlans) {
         this.carePlans = carePlans;
     }
 
@@ -240,4 +237,11 @@ public class Patient implements UserInfo {
     public void setAppointments(List<Appointment> appointments) {
         this.appointments = appointments;
     }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+
 }

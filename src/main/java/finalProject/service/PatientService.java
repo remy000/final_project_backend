@@ -5,6 +5,7 @@ import finalProject.domain.Patient;
 import finalProject.repository.PatientRepo;
 import finalProject.repository.ProviderRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,15 +14,20 @@ import java.util.List;
 public class PatientService {
     private final PatientRepo patientRepo;
     private final ProviderRepo providerRepo;
-
-    @Autowired
-    public PatientService(PatientRepo patientRepo, ProviderRepo providerRepo) {
+    private final PasswordEncoder passwordEncoder;
+@Autowired
+    public PatientService(PatientRepo patientRepo, ProviderRepo providerRepo, PasswordEncoder passwordEncoder) {
         this.patientRepo = patientRepo;
         this.providerRepo = providerRepo;
+        this.passwordEncoder = passwordEncoder;
     }
+
     public void savePatient(Patient patient){
         if(patient!=null){
+            patient.setRoles("patient");
             patient.setAssignedProvider("no");
+            patient.setPassword(passwordEncoder.encode(patient.getPassword()));
+            patient.setHealthCareProvider(null);
             patientRepo.save(patient);
         }
     }
@@ -67,6 +73,7 @@ public class PatientService {
     public Patient findByEmails(String email){
         return patientRepo.findByEmail(email).orElse(null);
     }
+
     public void assignHealthProvider(int patientId, int providerId){
         Patient patient=patientRepo.findById(patientId).orElse(null);
         HealthCareProvider provider=providerRepo.findById(providerId).orElse(null);
@@ -79,5 +86,7 @@ public class PatientService {
             throw new RuntimeException("Patient or HealthCareProvider not found");
         }
     }
+
+
 
 }

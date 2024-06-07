@@ -20,7 +20,7 @@ public class CarePlan {
     private String exercisePlan;
     private String dietPlan;
     private LocalDate creationDate;
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "patientId")
     @JsonBackReference(value = "patientPlanReference")
     private Patient patient;

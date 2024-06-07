@@ -3,6 +3,7 @@ package finalProject.service;
 import finalProject.domain.HealthCareProvider;
 import finalProject.repository.ProviderRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,12 +11,17 @@ import java.util.List;
 @Service
 public class ProviderService {
     private final ProviderRepo providerRepo;
-   @Autowired
-    public ProviderService(ProviderRepo providerRepo) {
+    private final PasswordEncoder passwordEncoder;
+@Autowired
+    public ProviderService(ProviderRepo providerRepo, PasswordEncoder passwordEncoder) {
         this.providerRepo = providerRepo;
+        this.passwordEncoder = passwordEncoder;
     }
+
     public void saveProvider(HealthCareProvider provider){
         if (provider != null) {
+            provider.setRoles("healthcare");
+            provider.setPassword(passwordEncoder.encode(provider.getPassword()));
             providerRepo.save(provider);
         }
     }

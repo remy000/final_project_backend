@@ -38,10 +38,10 @@ public class CarePlanService {
         }
         return false;
     }
-    public List<CarePlan>findByPatient(int id){
+    public CarePlan findByPatient(int id){
         Patient patient=patientRepo.findById(id).orElse(null);
         if(patient!=null){
-            return carePlanRepo.findByPatient(patient);
+            return carePlanRepo.findByPatient(patient).orElse(null);
         }
         return null;
     }
