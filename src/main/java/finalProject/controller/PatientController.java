@@ -1,6 +1,7 @@
 package finalProject.controller;
 
 import finalProject.domain.Patient;
+import finalProject.service.EmailService;
 import finalProject.service.JwtService;
 import finalProject.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -23,11 +23,13 @@ public class PatientController {
     private  final PatientService patientService;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final EmailService emailService;
 @Autowired
-    public PatientController(PatientService patientService, AuthenticationManager authenticationManager, JwtService jwtService) {
+    public PatientController(PatientService patientService, AuthenticationManager authenticationManager, JwtService jwtService, EmailService emailService) {
         this.patientService = patientService;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
+        this.emailService = emailService;
     }
 
     @PostMapping("/register")
@@ -35,9 +37,17 @@ public class PatientController {
         if (patient != null) {
             Patient patient1 = patientService.findPatient(patient.getPatientId());
             if (patient1 == null) {
+                String userEmail = patient.getEmail();
+                String subject = "Patient Account Created";
+                String text = """
+                        Thank you for Joining health Guard,
+                         your account has been created successfully\s
+                         Enjoy our service""";
+                if (userEmail != null) {
                     patientService.savePatient(patient);
-
-                     return new ResponseEntity<>("patient Saved", HttpStatus.OK);
+                    emailService.sendingEmails(userEmail, subject, text);
+                }
+                return new ResponseEntity<>("patient Saved", HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("patient already exist", HttpStatus.FOUND);
             }

@@ -2,6 +2,7 @@ package finalProject.controller;
 
 import finalProject.domain.HealthCareProvider;
 import finalProject.domain.Patient;
+import finalProject.service.EmailService;
 import finalProject.service.JwtService;
 import finalProject.service.ProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,19 +25,30 @@ public class ProviderController {
     private  final ProviderService providerService;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final EmailService emailService;
 @Autowired
-    public ProviderController(ProviderService providerService, AuthenticationManager authenticationManager, JwtService jwtService) {
+    public ProviderController(ProviderService providerService, AuthenticationManager authenticationManager, JwtService jwtService, EmailService emailService) {
         this.providerService = providerService;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
+        this.emailService = emailService;
     }
+
     @PostMapping("/register")
     public ResponseEntity<?> savePatient(@RequestBody HealthCareProvider provider) {
         if (provider != null) {
             HealthCareProvider provider1=providerService.findCareProvider(provider.getProviderId());
             if (provider1 == null) {
-                providerService.saveProvider(provider);
-
+                String userEmail = provider.getEmail();
+                String subject = "Health care provider Account Created";
+                String text = """
+                        Thank you for Joining health Guard,
+                         your account has been created successfully\s
+                         Enjoy our service""";
+                if (userEmail != null) {
+                    providerService.saveProvider(provider);
+                    emailService.sendingEmails(userEmail, subject, text);
+                }
                 return new ResponseEntity<>("careProvider Saved", HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("careProvider already exist", HttpStatus.FOUND);

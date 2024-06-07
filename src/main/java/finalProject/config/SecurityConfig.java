@@ -34,7 +34,7 @@ public class SecurityConfig {
         return  http.csrf().disable()
                 .headers().frameOptions().disable().and()
                 .authorizeHttpRequests()
-                .requestMatchers("/patient/**","/provider/**","/files/**").permitAll()
+                .requestMatchers("/patient/**","/provider/**","/healthData/**","/files/**").permitAll()
                 .requestMatchers("/users/changePassword", "/applications/**").authenticated()
                 .and()
                 .sessionManagement()
