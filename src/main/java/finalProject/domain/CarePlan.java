@@ -15,9 +15,13 @@ public class CarePlan {
             allocationSize = 1
     )
     private int planId;
+    @Column(columnDefinition = "TEXT")
     private String personalizedPlan;
+    @Column(columnDefinition = "TEXT")
     private String medicalPlan;
+    @Column(columnDefinition = "TEXT")
     private String exercisePlan;
+    @Column(columnDefinition = "TEXT")
     private String dietPlan;
     private LocalDate creationDate;
     @OneToOne

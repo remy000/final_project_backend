@@ -25,6 +25,7 @@ public class AppointmentService {
 
     public void saveAppointment(Appointment appointment){
     if (appointment!=null){
+        appointment.setStatus("pending");
         appointmentRepo.save(appointment);
     }
     }
@@ -33,13 +34,6 @@ public class AppointmentService {
     }
     public Appointment findAppointment(int id){
     return appointmentRepo.findById(id).orElse(null);
-    }
-    public List<Appointment>findByPatient(int id){
-        Patient patient=patientRepo.findById(id).orElse(null);
-        if(patient!=null){
-             return appointmentRepo.findByPatient(patient);
-        }
-        return null;
     }
     public List<Appointment>findByProvider(int id){
         HealthCareProvider provider=providerRepo.findById(id).orElse(null);
