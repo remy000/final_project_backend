@@ -8,6 +8,8 @@ import finalProject.repository.ProviderRepo;
 import finalProject.repository.ReportRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 import java.util.List;
 @Service
 public class ReportService {
@@ -24,6 +26,7 @@ public class ReportService {
 
     public void saveReport(Report report){
         if(report!=null){
+            report.setReportDate(LocalDate.now());
             reportRepo.save(report);
 
         }
@@ -41,7 +44,7 @@ public class ReportService {
         }
         return null;
     }
-    List<Report>findByProvider(int providerId){
+    public List<Report>findByProvider(int providerId){
         HealthCareProvider provider=providerRepo.findById(providerId).orElse(null);
         if(provider!=null){
             return  reportRepo.findByHealthCareProvider(provider);
