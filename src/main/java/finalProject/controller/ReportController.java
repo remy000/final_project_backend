@@ -60,7 +60,7 @@ public class ReportController {
     }
     return new ResponseEntity<>("no report available",HttpStatus.BAD_REQUEST);
     }
-@GetMapping("/findPatient/{id}")
+@GetMapping("/findReport/{id}")
     public ResponseEntity<?>findReport(@PathVariable("id") int id){
         Report report=reportService.findReport(id);
         if(report!=null){
@@ -87,6 +87,7 @@ public ResponseEntity<?>providerAppointments(@PathVariable("id") int id){
             dto.setReportId(report.getReportId());
             dto.setTitle(report.getTitle());
             dto.setRecommendations(report.getRecommendations());
+            dto.setImprovements(report.getImprovements());
             dto.setReportDate(report.getReportDate());
             dto.setPatientId(report.getPatient().getPatientId());
             dto.setPatientNames(report.getPatient().getNames());

@@ -15,8 +15,11 @@ public class Report {
             allocationSize = 1
     )
     private int reportId;
+    @Column(columnDefinition = "TEXT")
     private String title;
+    @Column(columnDefinition = "TEXT")
     private String recommendations;
+    @Column(columnDefinition = "TEXT")
     private String improvements;
     private LocalDate reportDate;
     @ManyToOne

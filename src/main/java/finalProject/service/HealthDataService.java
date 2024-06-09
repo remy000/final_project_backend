@@ -40,14 +40,6 @@ public class HealthDataService {
         }
         return null;
     }
-    public boolean deleteData(int id){
-    HealthData data=healthDataRepo.findById(id).orElse(null);
-    if(data!=null){
-        healthDataRepo.delete(data);
-        return true;
-    }
-    return false;
-    }
     public HealthData findByPatientAndDate(int patientId, LocalDate regDate){
     Patient patient=patientRepo.findById(patientId).orElse(null);
     if(patient!=null && regDate!=null) {

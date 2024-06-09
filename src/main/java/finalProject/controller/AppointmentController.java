@@ -45,7 +45,7 @@ public class AppointmentController {
                     "Thank you for your patience.";
             Appointment appointment=new Appointment();
             appointment.setType(dto.getType());
-            appointment.setRequestDate(LocalDate.now());
+            appointment.setRequestDate(dto.getRequestDate());
             appointment.setPatient(patient);
             appointment.setHealthCareProvider(provider);
             appointmentService.saveAppointment(appointment);
@@ -54,7 +54,7 @@ public class AppointmentController {
         }
         return new ResponseEntity<>("Appointment not booed",HttpStatus.BAD_REQUEST);
     }
-@GetMapping("/allAppointments")
+@GetMapping("/allAppointment")
     public ResponseEntity<?>allAppointments(){
         List<Appointment>appointmentList=appointmentService.allAppointments();
         if(appointmentList!=null){
@@ -96,7 +96,6 @@ public class AppointmentController {
     @GetMapping("/findProviderAppointment/{id}")
     public ResponseEntity<?>findProviderAppointments(@PathVariable("id") int id){
         List<Appointment>appointmentList=appointmentService.findByProvider(id);
-
         if(appointmentList!=null){
             List<AppointmentDto>appointmentDtoList=new ArrayList<>();
             for(Appointment appointment:appointmentList){

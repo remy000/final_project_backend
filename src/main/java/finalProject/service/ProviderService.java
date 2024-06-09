@@ -34,15 +34,6 @@ public class ProviderService {
     public HealthCareProvider findProviderByEmail(String email){
        return providerRepo.findByEmail(email).orElse(null);
     }
-    public boolean deleteProvider(int id){
-       HealthCareProvider provider=providerRepo.findById(id).orElse(null);
-       if(provider!=null){
-           providerRepo.delete(provider);
-           return true;
-       }
-       return false;
-    }
-
     public void updateProvider(HealthCareProvider provider){
        providerRepo.findById(provider.getProviderId()).map(careProvider->{
            careProvider.setNames(provider.getNames());
