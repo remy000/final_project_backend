@@ -8,6 +8,7 @@ import finalProject.service.ProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -34,7 +35,9 @@ public class ProviderController {
         this.emailService = emailService;
     }
 
+
     @PostMapping("/register")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<?> savePatient(@RequestBody HealthCareProvider provider) {
         if (provider != null) {
             HealthCareProvider provider1=providerService.findCareProvider(provider.getProviderId());
@@ -80,6 +83,7 @@ public class ProviderController {
 
     }
     @GetMapping("/allCareProviders")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<?>allHealthCareProvider(){
         List<HealthCareProvider> allProviders=providerService.allProviders();
         if(allProviders!=null){
@@ -89,6 +93,7 @@ public class ProviderController {
 
     }
     @GetMapping("/findProvider/{id}")
+    @PreAuthorize("hasAnyAuthority('admin','healthcare')")
     public ResponseEntity<?>findProvider(@PathVariable("id") int id){
         HealthCareProvider provider=providerService.findCareProvider(id);
         if(provider!=null){
@@ -97,6 +102,7 @@ public class ProviderController {
         return new ResponseEntity<>("no patient found",HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @GetMapping("/findProviderByEmail/{email}")
+    @PreAuthorize("hasAnyAuthority('admin','healthcare')")
     public ResponseEntity<?>findProviderByEmail(@PathVariable("email") String email){
         HealthCareProvider provider=providerService.findProviderByEmail(email);
         if(provider!=null){
@@ -105,6 +111,7 @@ public class ProviderController {
         return new ResponseEntity<>("provider not found",HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @PutMapping("/updateProvider")
+    @PreAuthorize("hasAnyAuthority('admin','healthcare')")
     public ResponseEntity<?>UpdateProvider(@RequestBody HealthCareProvider provider){
         providerService.updateProvider(provider);
         return new ResponseEntity<>("careProvider updated successfully",HttpStatus.OK);

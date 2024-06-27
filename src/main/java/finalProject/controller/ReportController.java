@@ -10,6 +10,7 @@ import finalProject.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class ReportController {
         this.providerService = providerService;
     }
     @PostMapping("/saveReport")
+    @PreAuthorize("hasAuthority('healthcare')")
     public ResponseEntity<?>saveReport(@RequestBody ReportDto reportDto){
         Patient patient=patientService.findPatient(reportDto.getPatientId());
         HealthCareProvider provider=providerService.findCareProvider(reportDto.getProviderId());
@@ -45,6 +47,7 @@ public class ReportController {
 
 }
 @GetMapping("/allReports")
+@PreAuthorize("hasAnyAuthority('healthcare','admin','patient')")
     public ResponseEntity<?>allReports(){
         List<Report>allReports=reportService.allReports();
         if(allReports!=null){
@@ -53,6 +56,7 @@ public class ReportController {
         return new ResponseEntity<>("no reports available",HttpStatus.BAD_REQUEST);
     }
     @GetMapping("patientReports/{id}")
+    @PreAuthorize("hasAnyAuthority('healthcare')")
     public ResponseEntity<?>patientReports(@PathVariable("id") int id){
     List<Report>reportList=reportService.findByPatient(id);
     if(reportList!=null){
@@ -61,6 +65,7 @@ public class ReportController {
     return new ResponseEntity<>("no report available",HttpStatus.BAD_REQUEST);
     }
 @GetMapping("/findReport/{id}")
+@PreAuthorize("hasAnyAuthority('healthcare','patient')")
     public ResponseEntity<?>findReport(@PathVariable("id") int id){
         Report report=reportService.findReport(id);
         if(report!=null){
@@ -78,6 +83,7 @@ public class ReportController {
         return new ResponseEntity<>("no report found",HttpStatus.BAD_REQUEST);
 }
 @GetMapping("/providerReports/{id}")
+@PreAuthorize("hasAuthority('healthcare')")
 public ResponseEntity<?>providerAppointments(@PathVariable("id") int id){
     List<Report>allReports=reportService.findByProvider(id);
     if(allReports!=null){

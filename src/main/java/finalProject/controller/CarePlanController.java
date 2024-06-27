@@ -11,6 +11,7 @@ import finalProject.service.ProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class CarePlanController {
         this.providerService = providerService;
     }
     @PostMapping("/saveCarePlan")
+    @PreAuthorize("hasAuthority('healthcare')")
     public ResponseEntity<?>saveCarePlan(@RequestBody CarePlanDto dto) {
         Patient patient = patientService.findPatient(dto.getPatientId());
         HealthCareProvider provider = providerService.findCareProvider(dto.getProviderId());
@@ -53,6 +55,7 @@ public class CarePlanController {
         return new ResponseEntity<>("No User found",HttpStatus.BAD_REQUEST);
     }
     @GetMapping("/allPlans")
+    @PreAuthorize("hasAuthority('healthcare')")
     public ResponseEntity<?>allCarePlan(){
         List<CarePlan>allPlans=carePlanService.allCarePlans();
         if(allPlans!=null){
@@ -61,6 +64,7 @@ public class CarePlanController {
         return new ResponseEntity<>("No Plans Found",HttpStatus.BAD_REQUEST);
     }
     @GetMapping("/patientPlan/{id}")
+    @PreAuthorize("hasAnyAuthority('healthcare','patient')")
     public ResponseEntity<?>findPatientPlan(@PathVariable ("id") int id){
       CarePlan plan=carePlanService.findByPatient(id);
       if(plan!=null){
@@ -69,6 +73,7 @@ public class CarePlanController {
       return new ResponseEntity<>("No Plan for patient",HttpStatus.BAD_REQUEST);
      }
      @GetMapping("/patientPlanByProvider/{patientId}/{providerId}")
+     @PreAuthorize("hasAnyAuthority('healthcare','patient')")
      public ResponseEntity<?>findByPatientAndProvider(@PathVariable("patientId") int patId, @PathVariable("providerId")
                                                       int providerId){
      CarePlan plan=carePlanService.findByPatientAndProvider(patId, providerId);
@@ -89,6 +94,7 @@ public class CarePlanController {
      return new ResponseEntity<>("No Plan found",HttpStatus.BAD_REQUEST);
      }
      @GetMapping("/findPlan/{id}")
+     @PreAuthorize("hasAnyAuthority('healthcare','patient')")
      public ResponseEntity<?>findPlan(@PathVariable("id") int id){
     CarePlan plan=carePlanService.findCarePlan(id);
     if(plan!=null){
@@ -107,6 +113,7 @@ public class CarePlanController {
     return new ResponseEntity<>("Plan not found",HttpStatus.BAD_REQUEST);
      }
 @DeleteMapping("/deletePlan/{id}")
+@PreAuthorize("hasAuthority('healthcare')")
      public ResponseEntity<?>deletePlan(@PathVariable("id") int id){
       boolean isDeleted= carePlanService.deleteCarePlan(id);
       if(isDeleted){
@@ -115,10 +122,10 @@ public class CarePlanController {
          return new ResponseEntity<>("care  not plan deleted",HttpStatus.OK);
      }
      @PutMapping("/updatePlan")
+     @PreAuthorize("hasAuthority('healthcare')")
      public ResponseEntity<?>updatePlan(@RequestBody CarePlan carePlan){
     carePlanService.updateCarePlan(carePlan);
     return new ResponseEntity<>("care plan updated",HttpStatus.OK);
-
 
      }
 }

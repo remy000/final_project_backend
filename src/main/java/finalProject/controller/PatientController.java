@@ -7,6 +7,7 @@ import finalProject.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -78,6 +79,7 @@ public class PatientController {
 
     }
 @GetMapping("/allPatients")
+@PreAuthorize("hasAnyAuthority('admin')")
     public ResponseEntity<?>allPatients(){
         List<Patient>allPatients=patientService.allPatients();
         if(allPatients!=null){
@@ -87,6 +89,7 @@ public class PatientController {
 
     }
     @GetMapping("/findPatient/{id}")
+    @PreAuthorize("hasAnyAuthority('patient','healthcare','admin')")
     public ResponseEntity<?>findPatient(@PathVariable("id") int id){
     Patient patient=patientService.findPatient(id);
     if(patient!=null){
@@ -95,6 +98,7 @@ public class PatientController {
     return new ResponseEntity<>("no patient found",HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @GetMapping("/patientByProvider/{id}")
+    @PreAuthorize("hasAuthority('healthcare')")
     public ResponseEntity<?>findPatientByProvider(@PathVariable("id") int id){
     List<Patient>patientList=patientService.findByHealthProviders(id);
     if(patientList!=null){
@@ -103,6 +107,7 @@ public class PatientController {
     return  new ResponseEntity<>("no patients found",HttpStatus.INTERNAL_SERVER_ERROR);
 }
 @GetMapping("/findPatientByEmail/{email}")
+@PreAuthorize("hasAnyAuthority('patient','healthcare')")
 public ResponseEntity<?>findPatientByEmail(@PathVariable("email") String email){
     Patient patient=patientService.findByEmails(email);
     if(patient!=null){
@@ -111,6 +116,7 @@ public ResponseEntity<?>findPatientByEmail(@PathVariable("email") String email){
     return new ResponseEntity<>("patient not found",HttpStatus.INTERNAL_SERVER_ERROR);
 }
     @PostMapping("/assignProvider/{patientId}/{providerId}")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<?> assignHealthProvider(@PathVariable int patientId, @PathVariable int providerId) {
         try {
             patientService.assignHealthProvider(patientId, providerId);
@@ -120,6 +126,7 @@ public ResponseEntity<?>findPatientByEmail(@PathVariable("email") String email){
         }
     }
     @PutMapping("/updatePatient")
+    @PreAuthorize("hasAnyAuthority('patient','healthcare','admin')")
     public ResponseEntity<?>UpdatePatient(@RequestBody Patient patient){
            patientService.updatePatient(patient);
            return new ResponseEntity<>("Patient updated successfully",HttpStatus.OK);

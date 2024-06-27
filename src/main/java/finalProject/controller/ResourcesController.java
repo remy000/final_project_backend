@@ -5,6 +5,7 @@ import finalProject.service.ResourcesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,6 +20,7 @@ public class ResourcesController {
         this.resourcesService = resourcesService;
     }
 @PostMapping("/saveResource")
+@PreAuthorize("hasAnyAuthority('healthcare','admin')")
     public ResponseEntity<?>saveResource(@ModelAttribute EducationResource resource, @RequestParam("file") MultipartFile file){
      try {
          resourcesService.saveResource(resource,file);
@@ -30,6 +32,7 @@ public class ResourcesController {
      }
     }
     @GetMapping("/allResources")
+    @PreAuthorize("hasAnyAuthority('healthcare','admin')")
     public ResponseEntity<?>allResources(){
         List<EducationResource>resourceList=resourcesService.allResources();
         if(resourceList!=null){
@@ -42,6 +45,7 @@ public class ResourcesController {
         return new ResponseEntity<>("fail to fetch resources",HttpStatus.BAD_REQUEST);
     }
     @GetMapping("/findResource/{id}")
+    @PreAuthorize("hasAnyAuthority('healthcare','admin','patient')")
     public ResponseEntity<?>findResource(@PathVariable ("id") int id){
      EducationResource resource=resourcesService.findEducationResource(id);
      if(resource!=null){
@@ -51,6 +55,7 @@ public class ResourcesController {
      return new ResponseEntity<>("resource not found",HttpStatus.BAD_REQUEST);
     }
     @GetMapping("/resourceByCategory/{category}")
+    @PreAuthorize("hasAnyAuthority('healthcare','admin','patient')")
     public ResponseEntity<?>findResourceByCategory(@PathVariable("category") String category){
     List<EducationResource>resourceList=resourcesService.findByCategory(category);
         if(resourceList!=null){

@@ -8,6 +8,7 @@ import finalProject.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
@@ -29,6 +30,7 @@ public class HealthDataController {
         this.patientService = patientService;
     }
     @PostMapping("/saveData")
+    @PreAuthorize("hasAuthority('patient')")
     public ResponseEntity<?>saveData(@RequestBody HealthDataDto healthDataDto){
         Patient patient=patientService.findPatient(healthDataDto.getPatientId());
         if(patient==null){
@@ -47,6 +49,7 @@ public class HealthDataController {
         return new ResponseEntity<>("health data saved", HttpStatus.OK);
     }
     @GetMapping("/allData")
+    @PreAuthorize("hasAuthority('healthcare')")
     public ResponseEntity<?>allData(){
         List<HealthData>allHealthData=healthDataService.allData();
         if(allHealthData!=null){
@@ -74,6 +77,7 @@ public class HealthDataController {
         return new ResponseEntity<>("No data found",HttpStatus.BAD_REQUEST);
     }
 @GetMapping("/findData/{id}")
+@PreAuthorize("hasAuthority('healthcare')")
     public ResponseEntity<?>findData(@PathVariable("id") int id){
         HealthData data=healthDataService.findData(id);
         if(data!=null){
@@ -96,6 +100,7 @@ public class HealthDataController {
         return new ResponseEntity<>("no data found",HttpStatus.OK);
     }
     @GetMapping("/findPatientData/{patientId}")
+    @PreAuthorize("hasAuthority('healthcare')")
     public ResponseEntity<?>findDataByPatient(@PathVariable ("patientId") int patientId) {
         List<HealthData> dataList = healthDataService.findByPatient(patientId);
         if (dataList != null) {
@@ -104,6 +109,7 @@ public class HealthDataController {
         return new ResponseEntity<>("No data found", HttpStatus.BAD_REQUEST);
     }
     @GetMapping("/findDataByPatientAndDate/{patientId}/{date}")
+    @PreAuthorize("hasAuthority('healthcare')")
     public ResponseEntity<?>findDataByResponse(@PathVariable ("patientId") int patientId, @PathVariable("date") String date) {
         LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
         HealthData data = healthDataService.findByPatientAndDate(patientId,localDate);

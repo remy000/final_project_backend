@@ -11,6 +11,7 @@ import finalProject.service.ProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -34,6 +35,7 @@ public class AppointmentController {
         this.providerService = providerService;
     }
     @PostMapping("/bookAppointment")
+    @PreAuthorize("hasAuthority('patient')")
     public ResponseEntity<?>bookAppointment(@RequestBody AppointmentDto dto){
         Patient patient=patientService.findPatient(dto.getPatientId());
         HealthCareProvider provider=providerService.findCareProvider(dto.getProviderId());
@@ -55,6 +57,7 @@ public class AppointmentController {
         return new ResponseEntity<>("Appointment not booed",HttpStatus.BAD_REQUEST);
     }
 @GetMapping("/allAppointment")
+@PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<?>allAppointments(){
         List<Appointment>appointmentList=appointmentService.allAppointments();
         if(appointmentList!=null){
@@ -77,6 +80,7 @@ public class AppointmentController {
         return new ResponseEntity<>("error fetching appointments",HttpStatus.BAD_REQUEST);
     }
    @GetMapping("/findAppointment/{id}")
+   @PreAuthorize("hasAnyAuthority('admin','healthcare','patient')")
     public  ResponseEntity<?>findAppointment(@PathVariable("id") int id){
         Appointment appointment=appointmentService.findAppointment(id);
         if(appointment!=null){
@@ -94,6 +98,7 @@ public class AppointmentController {
         return new ResponseEntity<>("no appointment found",HttpStatus.BAD_REQUEST);
     }
     @GetMapping("/findProviderAppointment/{id}")
+    @PreAuthorize("hasAuthority('healthcare')")
     public ResponseEntity<?>findProviderAppointments(@PathVariable("id") int id){
         List<Appointment>appointmentList=appointmentService.findByProvider(id);
         if(appointmentList!=null){
@@ -115,6 +120,7 @@ public class AppointmentController {
         return new ResponseEntity<>("error fetching appointments",HttpStatus.BAD_REQUEST);
         }
         @PostMapping("/approveAppointment/{id}")
+        @PreAuthorize("hasAuthority('healthcare')")
         public ResponseEntity<?>updateAppointment(@PathVariable ("id") int id,  @RequestBody Map<String, String> requestBody){
           Appointment appointment=appointmentService.findAppointment(id);
           Patient patient=patientService.findPatient(appointment.getPatient().getPatientId());
@@ -129,6 +135,7 @@ public class AppointmentController {
           return new ResponseEntity<>("Failed to approve appointment",HttpStatus.BAD_REQUEST);
         }
     @PostMapping("/declineAppointment/{id}")
+    @PreAuthorize("hasAuthority('healthcare')")
     public ResponseEntity<?>declineAppointment(@PathVariable ("id") int id,  @RequestBody Map<String, String> requestBody){
         Appointment appointment=appointmentService.findAppointment(id);
         Patient patient=patientService.findPatient(appointment.getPatient().getPatientId());
@@ -143,6 +150,7 @@ public class AppointmentController {
         return new ResponseEntity<>("Failed to decline appointment",HttpStatus.BAD_REQUEST);
     }
     @DeleteMapping("/deleteAppointment/{id}")
+    @PreAuthorize("hasAuthority('healthcare')")
     public ResponseEntity<?>deleteAppointment(@PathVariable("id") int id) {
         boolean isDeleted = appointmentService.deleteAppointment(id);
         if (isDeleted) {
