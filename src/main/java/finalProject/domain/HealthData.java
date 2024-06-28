@@ -19,6 +19,7 @@ public class HealthData {
     private float bodyWater;
     private float exercisesDuration;
     private float heartRate;
+    private float bloodGlucose;
     private float bloodPressure;
     private float respLevel;
     private float stressLevel;
@@ -31,12 +32,13 @@ public class HealthData {
     public HealthData() {
     }
 
-    public HealthData(int id, float calories, float bodyWater, float exercisesDuration, float heartRate, float bloodPressure, float respLevel, float stressLevel, LocalDate regDate, Patient patient) {
+    public HealthData(int id, float calories, float bodyWater, float exercisesDuration, float heartRate, float bloodGlucose, float bloodPressure, float respLevel, float stressLevel, LocalDate regDate, Patient patient) {
         this.id = id;
         this.calories = calories;
         this.bodyWater = bodyWater;
         this.exercisesDuration = exercisesDuration;
         this.heartRate = heartRate;
+        this.bloodGlucose = bloodGlucose;
         this.bloodPressure = bloodPressure;
         this.respLevel = respLevel;
         this.stressLevel = stressLevel;
@@ -90,6 +92,14 @@ public class HealthData {
 
     public void setBloodPressure(float bloodPressure) {
         this.bloodPressure = bloodPressure;
+    }
+
+    public float getBloodGlucose() {
+        return bloodGlucose;
+    }
+
+    public void setBloodGlucose(float bloodGlucose) {
+        this.bloodGlucose = bloodGlucose;
     }
 
     public float getRespLevel() {

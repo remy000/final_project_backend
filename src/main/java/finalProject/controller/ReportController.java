@@ -60,7 +60,20 @@ public class ReportController {
     public ResponseEntity<?>patientReports(@PathVariable("id") int id){
     List<Report>reportList=reportService.findByPatient(id);
     if(reportList!=null){
-        return new ResponseEntity<>(reportList,HttpStatus.OK);
+        List<ReportDto>dtoList=new ArrayList<>();
+        for(Report report:reportList){
+            ReportDto dto=new ReportDto();
+            dto.setReportId(report.getReportId());
+            dto.setTitle(report.getTitle());
+            dto.setRecommendations(report.getRecommendations());
+            dto.setImprovements(report.getImprovements());
+            dto.setReportDate(report.getReportDate());
+            dto.setPatientId(report.getPatient().getPatientId());
+            dto.setPatientNames(report.getPatient().getNames());
+            dto.setProviderId(report.getHealthCareProvider().getProviderId());
+            dtoList.add(dto);
+        }
+        return new ResponseEntity<>(dtoList,HttpStatus.OK);
     }
     return new ResponseEntity<>("no report available",HttpStatus.BAD_REQUEST);
     }

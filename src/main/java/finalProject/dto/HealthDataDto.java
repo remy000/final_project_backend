@@ -9,6 +9,7 @@ public class HealthDataDto {
     private float exercisesDuration;
     private float heartRate;
     private float bloodPressure;
+    private float bloodGlucose;
     private float respLevel;
     private float stressLevel;
     private LocalDate regDate;
@@ -19,13 +20,14 @@ public class HealthDataDto {
     public HealthDataDto() {
     }
 
-    public HealthDataDto(int dataId, float calories, float bodyWater, float exercisesDuration, float heartRate, float bloodPressure, float respLevel, float stressLevel, LocalDate regDate, int patientId, String names, String sickness) {
+    public HealthDataDto(int dataId, float calories, float bodyWater, float exercisesDuration, float heartRate, float bloodPressure, float bloodGlucose, float respLevel, float stressLevel, LocalDate regDate, int patientId, String names, String sickness) {
         this.dataId = dataId;
         this.calories = calories;
         this.bodyWater = bodyWater;
         this.exercisesDuration = exercisesDuration;
         this.heartRate = heartRate;
         this.bloodPressure = bloodPressure;
+        this.bloodGlucose = bloodGlucose;
         this.respLevel = respLevel;
         this.stressLevel = stressLevel;
         this.regDate = regDate;
@@ -80,6 +82,14 @@ public class HealthDataDto {
 
     public void setBloodPressure(float bloodPressure) {
         this.bloodPressure = bloodPressure;
+    }
+
+    public float getBloodGlucose() {
+        return bloodGlucose;
+    }
+
+    public void setBloodGlucose(float bloodGlucose) {
+        this.bloodGlucose = bloodGlucose;
     }
 
     public float getRespLevel() {

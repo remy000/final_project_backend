@@ -91,6 +91,7 @@ public class AppointmentController {
             dto.setRequestDate(appointment.getRequestDate());
             dto.setPatientId(appointment.getPatient().getPatientId());
             dto.setNames(appointment.getPatient().getNames());
+            dto.setEmail(appointment.getPatient().getEmail());
             dto.setProviderId(appointment.getHealthCareProvider().getProviderId());
             dto.setProviderNames(appointment.getHealthCareProvider().getNames());
             return new ResponseEntity<>(appointment,HttpStatus.OK);
@@ -111,6 +112,7 @@ public class AppointmentController {
                 dto.setRequestDate(appointment.getRequestDate());
                 dto.setPatientId(appointment.getPatient().getPatientId());
                 dto.setNames(appointment.getPatient().getNames());
+                dto.setEmail(appointment.getPatient().getEmail());
                 dto.setProviderId(appointment.getHealthCareProvider().getProviderId());
                 dto.setProviderNames(appointment.getHealthCareProvider().getNames());
                 appointmentDtoList.add(dto);

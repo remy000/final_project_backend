@@ -41,6 +41,7 @@ public class HealthDataController {
         data.setBodyWater(healthDataDto.getBodyWater());
         data.setExercisesDuration(healthDataDto.getExercisesDuration());
         data.setHeartRate(healthDataDto.getHeartRate());
+        data.setBloodGlucose(healthDataDto.getBloodGlucose());
         data.setBloodPressure(healthDataDto.getBloodPressure());
         data.setRespLevel(healthDataDto.getRespLevel());
         data.setStressLevel(healthDataDto.getStressLevel());
@@ -65,6 +66,7 @@ public class HealthDataController {
                 dataDto.setExercisesDuration(data.getExercisesDuration());
                 dataDto.setHeartRate(data.getHeartRate());
                 dataDto.setBloodPressure(data.getBloodPressure());
+                dataDto.setBloodGlucose(data.getBloodGlucose());
                 dataDto.setRespLevel(data.getRespLevel());
                 dataDto.setStressLevel(data.getStressLevel());
                 dataDto.setRegDate(data.getRegDate());
@@ -91,6 +93,7 @@ public class HealthDataController {
             dataDto.setExercisesDuration(data.getExercisesDuration());
             dataDto.setHeartRate(data.getHeartRate());
             dataDto.setBloodPressure(data.getBloodPressure());
+            dataDto.setBloodGlucose(data.getBloodGlucose());
             dataDto.setRespLevel(data.getRespLevel());
             dataDto.setStressLevel(data.getStressLevel());
             dataDto.setRegDate(data.getRegDate());
@@ -104,7 +107,25 @@ public class HealthDataController {
     public ResponseEntity<?>findDataByPatient(@PathVariable ("patientId") int patientId) {
         List<HealthData> dataList = healthDataService.findByPatient(patientId);
         if (dataList != null) {
-            return new ResponseEntity<>(dataList, HttpStatus.OK);
+            List<HealthDataDto>dataDtoList=new ArrayList<>();
+            for(HealthData data:dataList){
+                HealthDataDto dataDto=new HealthDataDto();
+                dataDto.setDataId(data.getId());
+                dataDto.setPatientId(data.getPatient().getPatientId());
+                dataDto.setNames(data.getPatient().getNames());
+                dataDto.setSickness(data.getPatient().getSickness());
+                dataDto.setCalories(data.getCalories());
+                dataDto.setBodyWater(data.getBodyWater());
+                dataDto.setExercisesDuration(data.getExercisesDuration());
+                dataDto.setHeartRate(data.getHeartRate());
+                dataDto.setBloodPressure(data.getBloodPressure());
+                dataDto.setBloodGlucose(data.getBloodGlucose());
+                dataDto.setRespLevel(data.getRespLevel());
+                dataDto.setStressLevel(data.getStressLevel());
+                dataDto.setRegDate(data.getRegDate());
+                dataDtoList.add(dataDto);
+            }
+            return new ResponseEntity<>(dataDtoList,HttpStatus.OK);
         }
         return new ResponseEntity<>("No data found", HttpStatus.BAD_REQUEST);
     }

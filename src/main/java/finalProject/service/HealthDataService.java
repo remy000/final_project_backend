@@ -57,6 +57,7 @@ public class HealthDataService {
         data.setExercisesDuration(updatedData.getExercisesDuration());
         data.setHeartRate(updatedData.getHeartRate());
         data.setBloodPressure(updatedData.getBloodPressure());
+        data.setBloodGlucose(updatedData.getBloodGlucose());
         data.setRespLevel(updatedData.getRespLevel());
         data.setStressLevel(updatedData.getStressLevel());
         data.setRegDate(LocalDate.now());

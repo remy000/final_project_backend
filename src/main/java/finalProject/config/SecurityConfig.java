@@ -34,7 +34,7 @@ public class SecurityConfig {
         return  http.csrf().disable()
                 .headers().frameOptions().disable().and()
                 .authorizeHttpRequests()
-                .requestMatchers("/patient/register","/patient/register","/provider/authentication","/files/**").permitAll()
+                .requestMatchers("/patient/register","/patient/authentication","/provider/authentication","/files/**").permitAll()
                 .requestMatchers("/healthData/**","/patient/**","/provider/**","/carePlan/**","/resource/**","/appointment/**","/report/**")
                 .authenticated()
                 .and()
