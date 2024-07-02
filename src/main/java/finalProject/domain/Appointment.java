@@ -17,6 +17,7 @@ public class Appointment {
     private int appointmentId;
     private String type;
     private String status;
+    private String description;
     private LocalDate requestDate;
     @ManyToOne
     @JoinColumn(name = "patientId")
@@ -30,10 +31,11 @@ public class Appointment {
     public Appointment() {
     }
 
-    public Appointment(int appointmentId, String type, String status, LocalDate requestDate, Patient patient, HealthCareProvider healthCareProvider) {
+    public Appointment(int appointmentId, String type, String status, String description, LocalDate requestDate, Patient patient, HealthCareProvider healthCareProvider) {
         this.appointmentId = appointmentId;
         this.type = type;
         this.status = status;
+        this.description = description;
         this.requestDate = requestDate;
         this.patient = patient;
         this.healthCareProvider = healthCareProvider;
@@ -61,6 +63,14 @@ public class Appointment {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public LocalDate getRequestDate() {

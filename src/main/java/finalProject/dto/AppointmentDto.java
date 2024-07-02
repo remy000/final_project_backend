@@ -11,6 +11,7 @@ public class AppointmentDto {
     private int appointmentId;
     private String type;
     private String status;
+    private String description;
     private LocalDate requestDate;
     private int patientId;
     private String names;
@@ -21,10 +22,11 @@ public class AppointmentDto {
     public AppointmentDto() {
     }
 
-    public AppointmentDto(int appointmentId, String type, String status, LocalDate requestDate, int patientId, String names, String email, int providerId, String providerNames) {
+    public AppointmentDto(int appointmentId, String type, String status, String description, LocalDate requestDate, int patientId, String names, String email, int providerId, String providerNames) {
         this.appointmentId = appointmentId;
         this.type = type;
         this.status = status;
+        this.description = description;
         this.requestDate = requestDate;
         this.patientId = patientId;
         this.names = names;
@@ -55,6 +57,14 @@ public class AppointmentDto {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public LocalDate getRequestDate() {

@@ -116,7 +116,7 @@ public ResponseEntity<?>findPatientByEmail(@PathVariable("email") String email){
     return new ResponseEntity<>("patient not found",HttpStatus.INTERNAL_SERVER_ERROR);
 }
     @PostMapping("/assignProvider/{patientId}/{providerId}")
-    @PreAuthorize("hasAuthority('admin')")
+    @PreAuthorize("hasAnyAuthority('admin')")
     public ResponseEntity<?> assignHealthProvider(@PathVariable int patientId, @PathVariable int providerId) {
         try {
             patientService.assignHealthProvider(patientId, providerId);

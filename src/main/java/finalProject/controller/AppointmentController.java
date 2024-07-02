@@ -47,6 +47,7 @@ public class AppointmentController {
                     "Thank you for your patience.";
             Appointment appointment=new Appointment();
             appointment.setType(dto.getType());
+            appointment.setDescription(dto.getDescription());
             appointment.setRequestDate(dto.getRequestDate());
             appointment.setPatient(patient);
             appointment.setHealthCareProvider(provider);
@@ -67,9 +68,11 @@ public class AppointmentController {
                 dto.setAppointmentId(appointment.getAppointmentId());
                 dto.setType(appointment.getType());
                 dto.setStatus(appointment.getStatus());
+                dto.setDescription(appointment.getDescription());
                 dto.setRequestDate(appointment.getRequestDate());
                 dto.setPatientId(appointment.getPatient().getPatientId());
                 dto.setNames(appointment.getPatient().getNames());
+                dto.setEmail(appointment.getPatient().getEmail());
                 dto.setProviderId(appointment.getHealthCareProvider().getProviderId());
                 dto.setProviderNames(appointment.getHealthCareProvider().getNames());
                 appointmentDtoList.add(dto);
@@ -88,6 +91,7 @@ public class AppointmentController {
             dto.setAppointmentId(appointment.getAppointmentId());
             dto.setType(appointment.getType());
             dto.setStatus(appointment.getStatus());
+            dto.setDescription(appointment.getDescription());
             dto.setRequestDate(appointment.getRequestDate());
             dto.setPatientId(appointment.getPatient().getPatientId());
             dto.setNames(appointment.getPatient().getNames());
@@ -109,6 +113,7 @@ public class AppointmentController {
                 dto.setAppointmentId(appointment.getAppointmentId());
                 dto.setType(appointment.getType());
                 dto.setStatus(appointment.getStatus());
+                dto.setDescription(appointment.getDescription());
                 dto.setRequestDate(appointment.getRequestDate());
                 dto.setPatientId(appointment.getPatient().getPatientId());
                 dto.setNames(appointment.getPatient().getNames());
