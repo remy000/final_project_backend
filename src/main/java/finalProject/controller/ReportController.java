@@ -4,6 +4,7 @@ import finalProject.domain.HealthCareProvider;
 import finalProject.domain.Patient;
 import finalProject.domain.Report;
 import finalProject.dto.ReportDto;
+import finalProject.service.EmailService;
 import finalProject.service.PatientService;
 import finalProject.service.ProviderService;
 import finalProject.service.ReportService;
@@ -22,25 +23,36 @@ public class ReportController {
     private final ReportService reportService;
     private final PatientService patientService;
     private final ProviderService providerService;
-@Autowired
-    public ReportController(ReportService reportService, PatientService patientService, ProviderService providerService) {
+    private final EmailService emailService;
+
+    @Autowired
+    public ReportController(ReportService reportService, PatientService patientService, ProviderService providerService, EmailService emailService) {
         this.reportService = reportService;
         this.patientService = patientService;
         this.providerService = providerService;
+        this.emailService = emailService;
     }
+
     @PostMapping("/saveReport")
     @PreAuthorize("hasAuthority('healthcare')")
     public ResponseEntity<?>saveReport(@RequestBody ReportDto reportDto){
         Patient patient=patientService.findPatient(reportDto.getPatientId());
         HealthCareProvider provider=providerService.findCareProvider(reportDto.getProviderId());
         if(patient!=null && provider!=null){
+            String email=patient.getEmail();
             Report report=new Report();
             report.setTitle(reportDto.getTitle());
             report.setRecommendations(reportDto.getRecommendations());
             report.setImprovements(reportDto.getImprovements());
             report.setPatient(patient);
             report.setHealthCareProvider(provider);
-            reportService.saveReport(report);
+            if(email!=null){
+                String subject="New Report: "+reportDto.getTitle();
+                String text = "Improvements: " + reportDto.getImprovements() + "\nRecommendations: " + reportDto.getRecommendations();
+                reportService.saveReport(report);
+                emailService.sendingEmails(email,subject,text);
+            }
+
             return new ResponseEntity<>("report sent", HttpStatus.OK);
         }
         return new ResponseEntity<>("fail to send report",HttpStatus.BAD_REQUEST);
