@@ -60,7 +60,7 @@ public class ResourcesController {
     List<EducationResource>resourceList=resourcesService.findByCategory(category);
         if(resourceList!=null){
             List<EducationResource>list=resourceList.stream().peek(resource -> {
-                String resourcePath= "http://localhost:8080/files/" +resource.getUploadPath();
+                String resourcePath= "http://192.168.1.154:8080/files/" +resource.getUploadPath();
                 resource.setUploadPath(resourcePath);
             }).toList();
             return new ResponseEntity<>(list,HttpStatus.OK);

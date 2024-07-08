@@ -1,6 +1,7 @@
 package finalProject.controller;
 
 import finalProject.domain.Patient;
+import finalProject.dto.PatientDto;
 import finalProject.service.EmailService;
 import finalProject.service.JwtService;
 import finalProject.service.PatientService;
@@ -111,7 +112,21 @@ public class PatientController {
 public ResponseEntity<?>findPatientByEmail(@PathVariable("email") String email){
     Patient patient=patientService.findByEmails(email);
     if(patient!=null){
-        return new ResponseEntity<>(patient,HttpStatus.OK);
+        PatientDto dto=new PatientDto();
+        dto.setPatientId(patient.getPatientId());
+        dto.setNames(patient.getNames());
+        dto.setEmail(patient.getEmail());
+        dto.setPhoneNumber(patient.getPhoneNumber());
+        dto.setBloodGroup(patient.getBloodGroup());
+        dto.setBirthDate(patient.getBirthDate());
+        dto.setWeight(patient.getWeight());
+        dto.setGender(patient.getGender());
+        dto.setAge(patient.getAge());
+        dto.setAddress(patient.getAddress());
+        dto.setSickness(patient.getSickness());
+        dto.setAssignedProvider(patient.getAssignedProvider());
+        dto.setProviderId(patient.getHealthCareProvider().getProviderId());
+        return new ResponseEntity<>(dto,HttpStatus.OK);
     }
     return new ResponseEntity<>("patient not found",HttpStatus.INTERNAL_SERVER_ERROR);
 }

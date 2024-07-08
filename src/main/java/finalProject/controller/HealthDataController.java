@@ -103,7 +103,7 @@ public class HealthDataController {
         return new ResponseEntity<>("no data found",HttpStatus.OK);
     }
     @GetMapping("/findPatientData/{patientId}")
-    @PreAuthorize("hasAuthority('healthcare')")
+    @PreAuthorize("hasAnyAuthority('healthcare','patient')")
     public ResponseEntity<?>findDataByPatient(@PathVariable ("patientId") int patientId) {
         List<HealthData> dataList = healthDataService.findByPatient(patientId);
         if (dataList != null) {
